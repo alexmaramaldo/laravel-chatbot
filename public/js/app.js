@@ -52849,12 +52849,6 @@ var app = new Vue({
 
 __webpack_require__(/*! ./custom */ "./resources/js/custom.js");
 
-$.ajaxSetup({
-  headers: {
-    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-  }
-});
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -53001,6 +52995,7 @@ __webpack_require__.r(__webpack_exports__);
 
   $(function () {
     var next_is_password = false;
+    var jwt_token = "";
     var getMessageText, message_side, sendMessage;
     message_side = "right";
 
@@ -53019,6 +53014,9 @@ __webpack_require__.r(__webpack_exports__);
         $.ajax({
           method: "POST",
           url: "/botman",
+          beforeSend: function beforeSend(xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwt_token);
+          },
           data: {
             driver: "web",
             userId: "",
@@ -53035,6 +53033,12 @@ __webpack_require__.r(__webpack_exports__);
               next_is_password = true;
             } else {
               next_is_password = false;
+            }
+
+            if (messages[i].text.includes("|{")) {
+              var json_data = JSON.parse(messages[i].text.split("|")[1]);
+              jwt_token = json_data.token;
+              messages[i].text = messages[i].text.split("|")[0];
             }
 
             sendMessageHtml(messages[i].text, "bot");
@@ -53075,7 +53079,24 @@ __webpack_require__.r(__webpack_exports__);
     return setTimeout(function () {
       return sendMessage("Type <b>help</b> to show all commands or <b>login</b> to enter on ChatBank", "bot");
     }, 100);
-  });
+  }); // setInterval(function() {
+  //     $.ajax({
+  //         url: "/refresh-token",
+  //         type: "get",
+  //         dataType: "json",
+  //         success: function(result) {
+  //             $('meta[name="csrf-token"]').attr("content", result.token);
+  //             $.ajaxSetup({
+  //                 headers: {
+  //                     "X-CSRF-TOKEN": result.token
+  //                 }
+  //             });
+  //         },
+  //         error: function(xhr, status, error) {
+  //             console.log(xhr);
+  //         }
+  //     });
+  // }, 1000);
 }).call(this);
 
 /***/ }),

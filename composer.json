@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "mpociot/botman": "^2.4",
-        "symfony/http-foundation": "5.0.8 as 4.4.8"
+        "symfony/http-foundation": "5.0.8 as 4.4.8",
+        "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

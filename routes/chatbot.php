@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Auth;
 
 $botman = resolve('botman');
 
-// $botman->hears('Hi|Hello|Hey', function ($bot) {
-//     $bot->reply("Hello " . Auth::user()['name'] . "! My name is Botman and I will help you with the transactions.");
-// });
+$botman->hears('Hi|Hello|Hey', function ($bot) {
+    $bot->reply("Hello " . Auth::user()['name'] . "! My name is Botman and I will help you with the transactions.");
+});
 
 $botman->hears('{message}', 'App\Http\Controllers\CommandController@actionCommands');
 
@@ -34,3 +34,18 @@ $botman->hears('{message}', 'App\Http\Controllers\CommandController@actionComman
 $botman->fallback(function ($bot) {
     $bot->reply("Unknown command.");
 });
+
+
+// Route::group([
+
+//     'middleware' => 'api',
+//     'prefix' => 'auth'
+
+// ], function ($router) {
+
+//     Route::post('login', 'AuthController@login');
+//     Route::post('logout', 'AuthController@logout');
+//     Route::post('refresh', 'AuthController@refresh');
+//     Route::post('me', 'AuthController@me');
+
+// });

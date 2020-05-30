@@ -2,9 +2,11 @@
 
 namespace App\Conversations;
 
+use App\Services\AccountService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Exception;
 
 class RegisterConversation extends Conversation
 {
@@ -16,6 +18,12 @@ class RegisterConversation extends Conversation
 
     protected $password_confirm;
 
+    protected $accountService;
+
+    public function __construct(AccountService $accountService)
+    {
+        $this->accountService = $accountService;
+    }
     public function askName()
     {
         $this->ask('Hello! What is your name?', function (Answer $answer) {
@@ -40,7 +48,7 @@ class RegisterConversation extends Conversation
 
     public function askPassword()
     {
-        $this->ask('What is your password?', function (Answer $answer) {
+        $this->ask('Inform your password...', function (Answer $answer) {
             // Save result
             $this->password = $answer->getText();
             $this->askPasswordConfirm();
@@ -49,7 +57,7 @@ class RegisterConversation extends Conversation
 
     public function askPasswordConfirm()
     {
-        $this->ask('Can you confirm your password?', function (Answer $answer) {
+        $this->ask('Confirm your password', function (Answer $answer) {
             // Save result
             $this->password_confirm = $answer->getText();
 
@@ -57,8 +65,25 @@ class RegisterConversation extends Conversation
                 $this->say('Hmmmm, password don\'t match, are you sure you typed correctly? Try again');
                 $this->askPassword();
             } else {
-                $this->say('Great - that is all we need, ' . $this->name);
-                $this->say('You are logged now, ' . $this->name);
+                $parameters = [
+                    "name" => $this->name,
+                    "email" => $this->email,
+                    "password" => $this->password
+                ];
+
+                try {
+                    $data = $this->accountService->register($parameters);
+
+                    $this->say('Great - that is all we need, ' . $this->name . '|' . json_encode($data));
+                    $this->say('You are logged now');
+                } catch (Exception $e) {
+                    if ($e->getCode() == 400) {
+                        $this->say('Houston, we have a problem, check bellow...<br /><b> - ' . $e->getMessage() . '</b>');
+                    } else {
+                        $this->say('Houston, we have a problem, this is so crazy. Try again please....');
+                        $this->askName();
+                    }
+                }
             }
         });
     }

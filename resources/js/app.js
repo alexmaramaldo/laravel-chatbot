@@ -39,9 +39,3 @@ const app = new Vue({
 });
 
 require("./custom");
-
-$.ajaxSetup({
-    headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    }
-});

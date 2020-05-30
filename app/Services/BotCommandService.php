@@ -4,13 +4,23 @@ namespace App\Services;
 
 use App\Conversations\ChangeCurrencyConversation;
 use App\Conversations\LoginConversation;
+use App\Conversations\LogoutConversation;
 use App\Conversations\RegisterConversation;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Incoming\Answer;
 
 class BotCommandService
 {
+    private $registerConversation;
+    private $loginConversation;
+    private $logoutConversation;
 
+    public function __construct(RegisterConversation $registerConversation, LoginConversation $loginConversation, LogoutConversation $logoutConversation)
+    {
+        $this->registerConversation = $registerConversation;
+        $this->loginConversation = $loginConversation;
+        $this->logoutConversation = $logoutConversation;
+    }
 
     public function listenCommand($botman, $message)
     {
@@ -23,13 +33,13 @@ class BotCommandService
                 $this->helpCommand($botman);
                 break;
             case 'create new account':
-                $botman->startConversation(new RegisterConversation);
+                $botman->startConversation($this->registerConversation);
                 break;
             case 'login':
-                $botman->startConversation(new LoginConversation);
+                $botman->startConversation($this->loginConversation);
                 break;
             case 'logout':
-                $this->logoutCommand($botman);
+                $botman->startConversation($this->logoutConversation);
                 break;
             case 'my balance':
                 $this->myBalanceCommand($botman);

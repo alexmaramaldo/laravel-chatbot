@@ -24,6 +24,7 @@
     };
     $(function() {
         let next_is_password = false;
+        let jwt_token = "";
         var getMessageText, message_side, sendMessage;
         message_side = "right";
         getMessageText = function() {
@@ -40,6 +41,12 @@
                 $.ajax({
                     method: "POST",
                     url: "/botman",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(
+                            "Authorization",
+                            "Bearer " + jwt_token
+                        );
+                    },
                     data: {
                         driver: "web",
                         userId: "",
@@ -55,6 +62,16 @@
                             next_is_password = true;
                         } else {
                             next_is_password = false;
+                        }
+
+                        if (messages[i].text.includes("|{")) {
+                            let json_data = JSON.parse(
+                                messages[i].text.split("|")[1]
+                            );
+
+                            jwt_token = json_data.token;
+
+                            messages[i].text = messages[i].text.split("|")[0];
                         }
                         sendMessageHtml(messages[i].text, "bot");
                     }
@@ -96,4 +113,23 @@
             );
         }, 100);
     });
+
+    // setInterval(function() {
+    //     $.ajax({
+    //         url: "/refresh-token",
+    //         type: "get",
+    //         dataType: "json",
+    //         success: function(result) {
+    //             $('meta[name="csrf-token"]').attr("content", result.token);
+    //             $.ajaxSetup({
+    //                 headers: {
+    //                     "X-CSRF-TOKEN": result.token
+    //                 }
+    //             });
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.log(xhr);
+    //         }
+    //     });
+    // }, 1000);
 }.call(this));

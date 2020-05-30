@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,13 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+
+Route::get('/refresh-token', function (Request $request) {
+    session()->regenerate();
+    return response()->json(
+        [
+            "token" => csrf_token()
+        ],
+        200
+    );
+});

@@ -2,9 +2,11 @@
 
 namespace App\Conversations;
 
+use App\Services\AccountService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Illuminate\Support\Facades\Auth;
 
 class LoginConversation extends Conversation
 {
@@ -12,17 +14,18 @@ class LoginConversation extends Conversation
 
     protected $password;
 
-    protected $code;
+    protected $accountService;
 
+    public function __construct(AccountService $accountService)
+    {
+        $this->accountService = $accountService;
+    }
 
     public function askLogin()
     {
         $this->ask('Hey, send me your email', function (Answer $answer) {
             // Save result
             $this->email = $answer->getText();
-
-            //Check if email exist
-
 
             $this->askPassword();
         });
@@ -34,9 +37,11 @@ class LoginConversation extends Conversation
             // Save result
             $this->password = $answer->getText();
 
-            $this->say('Perfect NAME, for security reasons, we send a code to your email.');
-
-            $this->askCode();
+            if ($data = $this->accountService->login($this->email, $this->password)) {
+                $this->say('Welcome ' . $data['name'] . '|' . json_encode($data));
+            } else {
+                $this->say('Hmm, I don\'t found your email and password in our database.');
+            }
         });
     }
 
