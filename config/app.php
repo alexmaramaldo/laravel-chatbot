@@ -1,5 +1,7 @@
 <?php
 
+use BotMan\BotMan\Facades\BotMan;
+
 return [
 
     /*

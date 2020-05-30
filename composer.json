@@ -9,11 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "botman/driver-web": "^1.5",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0",
+        "mpociot/botman": "^2.4",
+        "symfony/http-foundation": "5.0.8 as 4.4.8"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
