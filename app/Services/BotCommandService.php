@@ -40,7 +40,7 @@ class BotCommandService
 
     public function listenCommand($botman, $message)
     {
-        switch (strtolower($message)) {
+        switch (strtolower(trim($message))) {
             case 'help':
                 $this->helpCommand($botman);
                 break;
@@ -54,22 +54,22 @@ class BotCommandService
                 $botman->startConversation($this->logoutConversation);
                 break;
             case 'my balance':
-                $this->myBalanceCommand($botman);
+                $this->isLogged($botman) ? $this->myBalanceCommand($botman) : '';
                 break;
             case 'deposit':
-                $botman->startConversation($this->depositConversation);
+                $this->isLogged($botman) ? $botman->startConversation($this->depositConversation) : '';
                 break;
             case 'withdraw':
-                $botman->startConversation($this->withdrawConversation);
+                $this->isLogged($botman) ? $botman->startConversation($this->withdrawConversation) : '';
                 break;
             case 'my currency':
-                $this->myCurrency($botman);
+                $this->isLogged($botman) ? $this->myCurrency($botman) : '';
                 break;
             case 'list currencies':
-                $this->listCurrencies($botman);
+                $this->isLogged($botman) ? $this->listCurrencies($botman) : '';
                 break;
             case 'change my currency':
-                $botman->startConversation($this->changeCurrencyConversation);
+                $this->isLogged($botman) ? $botman->startConversation($this->changeCurrencyConversation) : '';
                 break;
             default:
                 $answer = "
@@ -80,28 +80,18 @@ class BotCommandService
         }
     }
 
-
-    public function askName($botman)
-    {
-        $botman->ask('Hello! What is your Name?', function (Answer $answer) {
-
-            $name = $answer->getText();
-
-            $this->say('Niceaaaaaa to meet you ' . $name);
-        });
-    }
-
     public function helpCommand($botman)
     {
         $message = "
             <b>help</b> to show all commands<br />
             <b>create new account</b> to register an account on ChatBank<br />
-            <b>login</b> to enter on ChatBank, ex: <b>login</b> myuser password<br />
-            <b>logout</b> to leave the ChatBank, ex: <b>login</b> myuser password<br />
+            <b>login</b> to enter on ChatBank<br />
+            <b>logout</b> to leave the ChatBank<br />
             <b>my balance</b> to show your current balance<br />
-            <b>deposit</b> to deposit a money on ChatBank, ex: <b>deposit</b> 10.00<br />
-            <b>withdraw</b> to withdraw a money on ChatBank, ex: <b>withdraw</b> 15.36<br />
+            <b>deposit</b> to deposit a money on ChatBank<br />
+            <b>withdraw</b> to withdraw a money on ChatBank<br />
             <b>my currency</b> to show your current set currency<br />
+            <b>list currencies</b> to list all allowed currencies on ChatBank<br />
             <b>change my currency</b> to select a new currency on ChatBank<br />
 
         ";
@@ -137,6 +127,16 @@ class BotCommandService
             } else {
                 $botman->reply("Oooops, we had an error!!!");
             }
+        }
+    }
+
+    public function isLogged($botman)
+    {
+        if (!Auth::check()) {
+            $botman->reply("Hey, I can't to do it, you need are logged on ChatBank to execute this command! Type <b>login</b> or <b>help</b> to see all commands!!!!");
+            return false;
+        } else {
+            return true;
         }
     }
 }
