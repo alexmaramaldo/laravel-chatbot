@@ -10,6 +10,7 @@ use App\Conversations\RegisterConversation;
 use App\Conversations\WithdrawConversation;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class BotCommandService
@@ -19,27 +20,27 @@ class BotCommandService
     private $logoutConversation;
     private $depositConversation;
     private $withdrawConversation;
+    private $changeCurrencyConversation;
 
     public function __construct(
         RegisterConversation $registerConversation,
         LoginConversation $loginConversation,
         LogoutConversation $logoutConversation,
         DepositConversation $depositConversation,
-        WithdrawConversation $withdrawConversation
+        WithdrawConversation $withdrawConversation,
+        ChangeCurrencyConversation  $changeCurrencyConversation
     ) {
         $this->registerConversation = $registerConversation;
         $this->loginConversation = $loginConversation;
         $this->logoutConversation = $logoutConversation;
         $this->depositConversation = $depositConversation;
         $this->withdrawConversation = $withdrawConversation;
+        $this->changeCurrencyConversation = $changeCurrencyConversation;
     }
 
     public function listenCommand($botman, $message)
     {
         switch (strtolower($message)) {
-            case 'hi':
-                $this->askName($botman);
-                break;
             case 'help':
                 $this->helpCommand($botman);
                 break;
@@ -62,10 +63,13 @@ class BotCommandService
                 $botman->startConversation($this->withdrawConversation);
                 break;
             case 'my currency':
-                $this->helpCommand($botman);
+                $this->myCurrency($botman);
+                break;
+            case 'list currencies':
+                $this->listCurrencies($botman);
                 break;
             case 'change my currency':
-                $botman->startConversation(new ChangeCurrencyConversation);
+                $botman->startConversation($this->changeCurrencyConversation);
                 break;
             default:
                 $answer = "
@@ -106,11 +110,33 @@ class BotCommandService
 
     public function myBalanceCommand($botman)
     {
-        $botman->reply('Your balance is ' . number_format(Auth::user()->myBalance(), 2));
+        $botman->reply('Your balance is ' . Auth::user()->currency . ' ' . number_format(Auth::user()->myBalance(), 2));
     }
 
-    public function showCurrencyCommand($botman)
+    public function myCurrency($botman)
     {
-        return;
+        $botman->reply('Your currency is ' . Auth::user()->currency);
+    }
+
+    public function listCurrencies($botman)
+    {
+        try {
+            $currencyAPIService = new CurrencyAPIService();
+            $message = "All currencies<br />";
+            $currencyList = array();
+            foreach ($currencyAPIService->currencyList() as $currency) {
+                $currencyList[] = '<b>' . $currency['currency'] . '</b> - ' . $currency['description'];
+            }
+
+            $message .= implode("<br />", $currencyList);
+
+            $botman->reply($message);
+        } catch (Exception $e) {
+            if ($e->getCode() == 400) {
+                $botman->reply("Oooops, we had an error: " . $e->getMessage());
+            } else {
+                $botman->reply("Oooops, we had an error!!!");
+            }
+        }
     }
 }

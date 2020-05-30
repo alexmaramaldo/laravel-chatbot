@@ -67,7 +67,7 @@ class BaseRepository
      */
     public function create(array $attributes): object
     {
-        return $this->obj::create($attributes);
+        return $this->obj->create($attributes);
     }
 
     /**

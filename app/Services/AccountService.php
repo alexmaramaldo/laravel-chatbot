@@ -118,4 +118,30 @@ class AccountService
             'expires_in' => Auth::factory()->getTTL() * 60
         ];
     }
+
+    public function updateCurrency($user_id, $currency)
+    {
+
+        $user = $this->userRepository->find($user_id);
+
+        if (!$user) {
+            throw new Exception("User not found", 400);
+        }
+
+        $currencyAPIService = new CurrencyAPIService();
+
+        $newBalance = $currencyAPIService->convertAmount($user->currency, $currency, Auth::user()->myBalance());
+
+        $user->currency = $currency;
+        $user->save();
+
+        $user->transactions()->delete();
+
+        $user->transactions()->create([
+            'value' => str_replace(",", "", $newBalance),
+            'type' => 'deposit'
+        ]);
+
+        return true;
+    }
 }

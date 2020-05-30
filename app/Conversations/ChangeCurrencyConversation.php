@@ -2,37 +2,63 @@
 
 namespace App\Conversations;
 
+use App\Services\AccountService;
+use App\Services\CurrencyAPIService;
+use App\Services\TransactionService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ChangeCurrencyConversation extends Conversation
 {
-    protected $current_currency;
+    protected $currency;
 
-    protected $code;
+    protected $currencyAPIService;
 
+    protected $accountService;
+
+    public function __construct(CurrencyAPIService $currencyAPIService, AccountService $accountService)
+    {
+        $this->currencyAPIService = $currencyAPIService;
+        $this->accountService = $accountService;
+    }
 
     public function askCurrency()
     {
-        $message = "
-            You selected to change you currency, see bellow all currencies allowed on the bank<br />
-            <b>1</b> - Real BRL<br />
-            <b>2</b> - Dolar USA<br />
-            <b>3</b> - Dolar CAN<br />
-            <b>4</b> - Euro EUR<br />
+        $message = "<b>Currency List:</b><br />";
+        $currencyList = array();
+        foreach ($this->currencyAPIService->currencyList() as $currency) {
+            $currencyList[] = '<b>' . $currency['currency'] . '</b> - ' . $currency['description'];
+        }
 
-        ";
-        $this->say($message);
-        $this->ask('Choose a option', function (Answer $answer) {
+        $message .= implode("<br />", $currencyList);
+
+        $this->say("Choose an option bellow!");
+
+        $this->ask($message, function (Answer $answer) {
             // Save result
-            $this->code = $answer->getText();
+            $this->currency = strtoupper($answer->getText());
 
-            //Logic to change it
+            if (!$this->currencyAPIService->checkIfCurrencyExist($this->currency)) {
+                $this->say("You need select an valid currency, try again");
+                return $this->askCurrency();
+            }
 
-            $this->say('Currency updated');
+            if ($this->currency == Auth::user()->currency) {
+                return $this->say("You already use this currency");
+            }
+            try {
+
+                $this->accountService->updateCurrency(Auth::user()->id, $this->currency);
+                $this->say("Currency updated successfully");
+            } catch (Exception $e) {
+                $this->say("Ooops, we had an error: " . $e->getMessage());
+            }
         });
     }
+
 
 
     public function run()

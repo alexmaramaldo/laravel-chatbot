@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\User;
+use Exception;
 
 class UserRepository extends BaseRepository
 {
