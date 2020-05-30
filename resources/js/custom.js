@@ -74,6 +74,13 @@
                             messages[i].text = messages[i].text.split("|")[0];
                         }
                         sendMessageHtml(messages[i].text, "bot");
+
+                        if (messages[i].text.includes("Bye")) {
+                            jwt_token = "";
+                            setTimeout(function() {
+                                window.location.href = "/";
+                            }, 2000);
+                        }
                     }
                 });
             }

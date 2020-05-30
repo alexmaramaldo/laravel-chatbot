@@ -53042,6 +53042,13 @@ __webpack_require__.r(__webpack_exports__);
             }
 
             sendMessageHtml(messages[i].text, "bot");
+
+            if (messages[i].text.includes("Bye")) {
+              jwt_token = "";
+              setTimeout(function () {
+                window.location.href = "/";
+              }, 2000);
+            }
           }
         });
       }

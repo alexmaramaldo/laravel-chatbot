@@ -8,10 +8,12 @@ class Transaction extends Model
 {
     public $table = 'transactions';
 
+    protected $fillable = ['type', 'user_id', 'value'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function instance()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

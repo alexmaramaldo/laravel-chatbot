@@ -16,12 +16,12 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
 
-            $table->uuid('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->double('value');
             $table->enum('type', ['deposit', 'withdraw']);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('admin.users')
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

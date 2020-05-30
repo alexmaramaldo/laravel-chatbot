@@ -3,28 +3,39 @@
 namespace App\Services;
 
 use App\Conversations\ChangeCurrencyConversation;
+use App\Conversations\DepositConversation;
 use App\Conversations\LoginConversation;
 use App\Conversations\LogoutConversation;
 use App\Conversations\RegisterConversation;
+use App\Conversations\WithdrawConversation;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Illuminate\Support\Facades\Auth;
 
 class BotCommandService
 {
     private $registerConversation;
     private $loginConversation;
     private $logoutConversation;
+    private $depositConversation;
+    private $withdrawConversation;
 
-    public function __construct(RegisterConversation $registerConversation, LoginConversation $loginConversation, LogoutConversation $logoutConversation)
-    {
+    public function __construct(
+        RegisterConversation $registerConversation,
+        LoginConversation $loginConversation,
+        LogoutConversation $logoutConversation,
+        DepositConversation $depositConversation,
+        WithdrawConversation $withdrawConversation
+    ) {
         $this->registerConversation = $registerConversation;
         $this->loginConversation = $loginConversation;
         $this->logoutConversation = $logoutConversation;
+        $this->depositConversation = $depositConversation;
+        $this->withdrawConversation = $withdrawConversation;
     }
 
     public function listenCommand($botman, $message)
     {
-
         switch (strtolower($message)) {
             case 'hi':
                 $this->askName($botman);
@@ -44,14 +55,11 @@ class BotCommandService
             case 'my balance':
                 $this->myBalanceCommand($botman);
                 break;
-            case 'my balance':
-                $this->helpCommand($botman);
-                break;
             case 'deposit':
-                $this->helpCommand($botman);
+                $botman->startConversation($this->depositConversation);
                 break;
             case 'withdraw':
-                $this->helpCommand($botman);
+                $botman->startConversation($this->withdrawConversation);
                 break;
             case 'my currency':
                 $this->helpCommand($botman);
@@ -96,28 +104,9 @@ class BotCommandService
         $botman->reply($message);
     }
 
-    public function logoutCommand($botman)
-    {
-        $botman->reply('I will miss you, come back here whenever possible, I like to talk to you!');
-        $botman->reply('Bye...............');
-
-        $botman->reply('Hello I\'m the Banker! :)');
-        $botman->reply('Type <b>help</b> to show all commands or <b>login</b> to enter on ChatBank');
-    }
-
     public function myBalanceCommand($botman)
     {
-        $botman->reply('Your balance is 20.00');
-    }
-
-    public function depositCommand($botman, $message)
-    {
-        return;
-    }
-
-    public function withdrawCommand($botman, $message)
-    {
-        return;
+        $botman->reply('Your balance is ' . number_format(Auth::user()->myBalance(), 2));
     }
 
     public function showCurrencyCommand($botman)

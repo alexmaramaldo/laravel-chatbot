@@ -57,6 +57,15 @@ class AccountService
         return $data_return;
     }
 
+    public function isLogged()
+    {
+        try {
+            $user = Auth::user();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 
     /**
      * Get the authenticated User.

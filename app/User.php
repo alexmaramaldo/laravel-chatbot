@@ -68,4 +68,22 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Transaction::class);
     }
+
+
+    public function myBalance()
+    {
+        $inputs = 0;
+        $outputs = 0;
+        foreach ($this->transactions as $transaction) {
+            if ($transaction->type == 'deposit') {
+                $inputs += $transaction->value;
+            }
+
+            if ($transaction->type == 'withdraw') {
+                $outputs += $transaction->value;
+            }
+        }
+
+        return $inputs - $outputs;
+    }
 }
