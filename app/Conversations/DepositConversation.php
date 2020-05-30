@@ -26,9 +26,13 @@ class DepositConversation extends Conversation
             // Save result
             $this->value = $answer->getText();
 
-            $this->transactionService->deposit(['value' => $this->value]);
-
-            $this->say("Depositing successfully, check your balance with the command <b> my balance </b>.");
+            if (is_numeric($this->value)) {
+                $this->transactionService->deposit(['value' => $this->value]);
+                $this->say("Depositing successfully, check your balance with the command <b> my balance </b>.");
+            } else {
+                $this->say("You need inform a numeric value ex: <b>1123.34</b>.<br />Try again...");
+                return $this->askValue();
+            }
         });
     }
 

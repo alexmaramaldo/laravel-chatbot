@@ -28,8 +28,13 @@ class WithdrawConversation extends Conversation
             $this->value = $answer->getText();
 
             try {
-                $this->transactionService->withdraw(['value' => $this->value]);
-                $this->say("Withdrawing successfully, check your balance with the command <b> my balance </b>.");
+                if (is_numeric($this->value)) {
+                    $this->transactionService->withdraw(['value' => $this->value]);
+                    $this->say("Withdrawing successfully, check your balance with the command <b> my balance </b>.");
+                } else {
+                    $this->say("You need inform a numeric value ex: <b>1123.34</b>.<br />Try again...");
+                    return $this->askValue();
+                }
             } catch (Exception $e) {
                 if ($e->getCode() == 400) {
                     $this->say("We had an error: " . $e->getMessage());
