@@ -41,6 +41,9 @@ class TransactionService
         try {
 
             $user = Auth::user();
+
+            $this->validateValue($parameters['value'], 'deposit');
+
             $data = [
                 'value' => $parameters['value'],
                 'type' => 'deposit'
@@ -67,9 +70,8 @@ class TransactionService
     {
         try {
             $user = Auth::user();
-            if ($user->myBalance() < $parameters['value']) {
-                throw new Exception('Insufficient funds', 400);
-            }
+
+            $this->validateValue($parameters['value'], 'withdraw', $user->myBalance());
 
             $data = [
                 'value' => $parameters['value'],
@@ -81,5 +83,27 @@ class TransactionService
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+
+    /**
+     * validateValue, check if the value is > 0
+     *
+     * @param [type] $value
+     * @return bool
+     */
+    public function validateValue($value, $type, $balance = 0): bool
+    {
+        if ($value < 0) {
+            throw new Exception("You need inform a value > 0", 400);
+        }
+
+        if ($type == 'withdraw') {
+            if ($balance < $value) {
+                throw new Exception('Insufficient funds', 400);
+            }
+        }
+
+        return true;
     }
 }

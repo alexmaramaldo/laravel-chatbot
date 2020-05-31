@@ -8,6 +8,7 @@ use App\Services\TransactionService;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class DepositConversation extends Conversation
@@ -43,8 +44,13 @@ class DepositConversation extends Conversation
             $this->value = $answer->getText();
 
             if (is_numeric($this->value)) {
+                if ($this->value < 0) {
+                    $this->say("You need inform a positive value ex: <b>1123.34</b>.<br />Try again...");
+                    return $this->askValue();
+                }
                 return $this->askCurrency();
             } else {
+
                 $this->say("You need inform a numeric value ex: <b>1123.34</b>.<br />Try again...");
                 return $this->askValue();
             }
@@ -70,12 +76,22 @@ class DepositConversation extends Conversation
 
             $value_in_usd = $this->value;
 
-            if ($this->currency != 'SKIP' && $this->currency != 'USD') {
-                $value_in_usd = $this->currencyAPIService->convertAmount($this->currency, 'USD', $this->value);
-            }
+            try {
+                if ($this->currency != 'SKIP' && $this->currency != 'USD') {
+                    $value_in_usd = $this->currencyAPIService->convertAmount($this->currency, 'USD', $this->value);
+                }
 
-            $this->transactionService->deposit(['value' => $value_in_usd]);
-            return $this->say("Depositing successfully, check your balance with the command <b> my balance </b>.");
+                $this->transactionService->deposit(['value' => $value_in_usd]);
+                return $this->say("Depositing successfully, check your balance with the command <b> my balance </b>.");
+            } catch (Exception $e) {
+                if ($e->getCode() == 400) {
+                    $this->say("We had an error: " . $e->getMessage());
+                    $this->say("Try again...");
+                    return $this->askValue();
+                } else {
+                    return $this->say("We had an unknow error: " . $e->getMessage());
+                }
+            }
         });
     }
 

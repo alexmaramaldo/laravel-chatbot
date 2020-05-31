@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Conversations\ChangeCurrencyConversation;
 use App\Conversations\DepositConversation;
 use App\Conversations\LoginConversation;
 use App\Conversations\LogoutConversation;
@@ -23,7 +22,6 @@ class BotCommandService
     private $logoutConversation;
     private $depositConversation;
     private $withdrawConversation;
-    private $changeCurrencyConversation;
 
     /**
      * Create a new BotCommandService instance
@@ -33,7 +31,6 @@ class BotCommandService
      * @param LogoutConversation $logoutConversation Dependency injection from model layer
      * @param DepositConversation $depositConversation Dependency injection from model layer
      * @param WithdrawConversation $withdrawConversation Dependency injection from model layer
-     * @param ChangeCurrencyConversation $changeCurrencyConversation Dependency injection from model layer
      *
      * @return void
      */
@@ -42,15 +39,13 @@ class BotCommandService
         LoginConversation $loginConversation,
         LogoutConversation $logoutConversation,
         DepositConversation $depositConversation,
-        WithdrawConversation $withdrawConversation,
-        ChangeCurrencyConversation  $changeCurrencyConversation
+        WithdrawConversation $withdrawConversation
     ) {
         $this->registerConversation = $registerConversation;
         $this->loginConversation = $loginConversation;
         $this->logoutConversation = $logoutConversation;
         $this->depositConversation = $depositConversation;
         $this->withdrawConversation = $withdrawConversation;
-        $this->changeCurrencyConversation = $changeCurrencyConversation;
     }
 
     /**
@@ -85,14 +80,8 @@ class BotCommandService
             case 'withdraw':
                 $this->isLogged($botman) ? $botman->startConversation($this->withdrawConversation) : '';
                 break;
-            case 'my currency':
-                $this->isLogged($botman) ? $this->myCurrency($botman) : '';
-                break;
             case 'list currencies':
                 $this->isLogged($botman) ? $this->listCurrencies($botman) : '';
-                break;
-            case 'change my currency':
-                $this->isLogged($botman) ? $botman->startConversation($this->changeCurrencyConversation) : '';
                 break;
             default:
                 $answer = "
@@ -120,9 +109,7 @@ class BotCommandService
             <b>my balance</b> to show your current balance<br />
             <b>deposit</b> to deposit a money on ChatBank<br />
             <b>withdraw</b> to withdraw a money on ChatBank<br />
-            <b>my currency</b> to show your current set currency<br />
             <b>list currencies</b> to list all allowed currencies on ChatBank<br />
-            <b>change my currency</b> to select a new currency on ChatBank<br />
 
         ";
         $botman->reply($message);
@@ -138,18 +125,6 @@ class BotCommandService
     public function myBalanceCommand($botman)
     {
         $botman->reply('Your balance is ' . Auth::user()->currency . ' ' . number_format(Auth::user()->myBalance(), 2));
-    }
-
-    /**
-     * myCurrency - Show the currency from the user
-     *
-     * @param BotMan $botman BotMan instance
-     *
-     * @return mixed
-     */
-    public function myCurrency($botman)
-    {
-        $botman->reply('Your currency is ' . Auth::user()->currency);
     }
 
     /**
