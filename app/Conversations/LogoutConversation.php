@@ -13,11 +13,20 @@ class LogoutConversation extends Conversation
 
     protected $accountService;
 
+    /**
+     * Create a new LoginConversation instance
+     *
+     * @param AccountService $accountService Dependency injection from repository layer
+     */
     public function __construct(AccountService $accountService)
     {
         $this->accountService = $accountService;
     }
 
+    /**
+     * Apply the the action to logout
+     *
+     */
     public function logout()
     {
 
@@ -27,7 +36,10 @@ class LogoutConversation extends Conversation
         $this->say('Bye...............');
     }
 
-
+    /**
+     * Main method to run this Conversation
+     *
+     */
     public function run()
     {
         // This will be called immediately
