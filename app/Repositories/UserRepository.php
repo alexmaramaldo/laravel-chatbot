@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository
      *
      * @return object
      */
-    public function findByEmail(string $email): object
+    public function findByEmail(string $email)
     {
         $user = $this->obj->where("email", $email)->first();
         return $user;

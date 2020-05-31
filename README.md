@@ -141,7 +141,7 @@ AMDOREN_API_URL=
 
 -   ER Diagram
     ![alt ER Diagram](http://osbox.com.br/alexmaramaldo-chatbot/ERChatbot.png)
--   Use Case
+-   Use Case  
     ![alt Use Case](http://osbox.com.br/alexmaramaldo-chatbot/UseCaseV1.png)
 -   Activity Diagram
     ![alt Activity Diagram](http://osbox.com.br/alexmaramaldo-chatbot/ChatBotDiagram.png)

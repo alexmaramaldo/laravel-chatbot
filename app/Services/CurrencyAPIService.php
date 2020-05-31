@@ -71,7 +71,7 @@ class CurrencyAPIService
      *
      * @return float the value converted
      */
-    public function convertAmount(string $from, string $to, float $amount): float
+    public function convertAmount(string $from, string $to, float $amount)
     {
         if (!$this->api_key) {
             throw new Exception("Secret token from AMDOREN is EMPTY", 400);
@@ -90,7 +90,7 @@ class CurrencyAPIService
 
         $amount = $response->json()['amount'];
 
-        return number_format($amount, 2);
+        return number_format($amount, 2, ".", "");
     }
 
     /**
