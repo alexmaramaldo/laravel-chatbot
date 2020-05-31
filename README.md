@@ -70,6 +70,7 @@ DB_USERNAME=default
 DB_PASSWORD=secret
 ```
 
+-   Install the composer packages `$ composer install`
 -   You can import the `database/backup.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
 -   Open your browser `http://yourhost`
 -   Extra environments vars that you can set, but, not mandatory:
@@ -105,7 +106,7 @@ AMDOREN_API_SECRET=
 AMDOREN_API_URL=
 ```
 
-# Plus: Command to run using docker with sqlite(without MySQL)
+##### Plus: Command to run using docker with sqlite(without MySQL)
 
 -   Download and run the image, don't need change the value, only the PORT if you need.
 
