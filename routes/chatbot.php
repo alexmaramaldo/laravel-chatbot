@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// use App\Http\Controllers\CurrencyController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -18,10 +17,6 @@ use Illuminate\Support\Facades\Auth;
 */
 
 $botman = resolve('botman');
-
-$botman->hears('Hi|Hello|Hey', function ($bot) {
-    $bot->reply("Hello " . Auth::user()['name'] . "! My name is BotBanker, How Can I help you?.");
-});
 
 $botman->hears('{message}', 'App\Http\Controllers\CommandController@actionCommands');
 
