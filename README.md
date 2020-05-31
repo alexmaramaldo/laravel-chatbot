@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](http://chatbot-env.eba-mmc6apjs.us-west-2.elasticbeanstalk.com)
 
-AlexMaramaldo ChatBank is a friendly chat to execute basic operations in your account bank. Through some basic commands, it is possible to deposit, withdraw, even in different currencies.
+AlexMaramaldo ChatBank is a friendly chat to execute basic operations in your account bank. Through some basic commands, it is possible to deposit, withdraw, even in different currencies. You can see a DEMO version running on Amazon AWS ([http://chatbot-env.eba-mmc6apjs.us-west-2.elasticbeanstalk.com](http://chatbot-env.eba-mmc6apjs.us-west-2.elasticbeanstalk.com)), using Elastic Beanstalk and RDS with mysql.
 
 # Introduction
 
@@ -136,5 +136,14 @@ $ docker run -d -t -i -e DB_HOST='host.docker.internal' \
 AMDOREN_API_SECRET=
 AMDOREN_API_URL=
 ```
+
+# Documentations
+
+-   ER Diagram
+    ![alt ER Diagram](http://osbox.com.br/alexmaramaldo-chatbot/ERChatbot.png)
+-   Use Case
+    ![alt Use Case](http://osbox.com.br/alexmaramaldo-chatbot/UseCaseV1.png)
+-   Activity Diagram
+    ![alt Activity Diagram](http://osbox.com.br/alexmaramaldo-chatbot/ChatBotDiagram.png)
 
 # Videos tutorials
