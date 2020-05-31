@@ -9,21 +9,33 @@ AlexMaramaldo ChatBank is a friendly chat to execute basic operations in your ac
 The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache 2.4, has an integration with AMDOREN(https://www.amdoren.com/api), my token to be work fine, I got the payment license, and I have 10K requestsper month, but, if you have an account, you can use your `API KEY`, this project has main parts beside default from the Laravel, like:
 
 -   App\Services
-    -- AccountService.php
-    -- BotCommandService.php
-    -- CurrencyAPIService.php
-    -- TransactionService.php
+
+```
+- AccountService.php
+- BotCommandService.php
+- CurrencyAPIService.php
+- TransactionService.php
+```
+
 -   App\Repositores
-    -- BaseRepository.php
-    -- TransactionRepository.php
-    -- UserRepository.php
+
+```
+- BaseRepository.php
+- TransactionRepository.php
+- UserRepository.php
+```
+
 -   App\Conversations
-    -- ChangeCurrencyConversation.php
-    -- DepositConversation.php
-    -- LoginConversation.php
-    -- LogoutConversation.php
-    -- RegisterConversation.php
-    -- WithdrawConversation.php
+
+```
+- ChangeCurrencyConversation.php
+- DepositConversation.php
+- LoginConversation.php
+- LogoutConversation.php
+- RegisterConversation.php
+- WithdrawConversation.php
+
+```
 
 #### Commands available:
 
@@ -117,7 +129,6 @@ $ docker run -d -t -i -e DB_HOST='host.docker.internal' \
     --name alexmaramaldo-chatbot alexmaramaldo/chatbot
 ```
 
--   You need tun the migrate command from the Laravel Docker to create tables on sqlite `$ docker exec -it alexmaramaldo-chatbot php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
 -   Open your browser `http://yourhost:8000`
 -   Extra environments vars that you can set, but, not mandatory:
 
