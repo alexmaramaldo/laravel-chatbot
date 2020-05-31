@@ -11,19 +11,28 @@ use Exception;
 class RegisterConversation extends Conversation
 {
     protected $name;
-
     protected $email;
-
     protected $password;
-
     protected $password_confirm;
 
     protected $accountService;
 
+    /**
+     * Create a new RegisterConversation instance
+     *
+     * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
+     */
     public function __construct(AccountService $accountService)
     {
         $this->accountService = $accountService;
     }
+
+    /**
+     * Apply the the action to get the name
+     *
+     */
     public function askName()
     {
         $this->ask('Hello! What is your name?', function (Answer $answer) {
@@ -35,6 +44,10 @@ class RegisterConversation extends Conversation
         });
     }
 
+    /**
+     * Apply the the action to get the email
+     *
+     */
     public function askEmail()
     {
         $this->ask('Now, I need your email, what is it?', function (Answer $answer) {
@@ -45,7 +58,10 @@ class RegisterConversation extends Conversation
         });
     }
 
-
+    /**
+     * Apply the the action to get the password
+     *
+     */
     public function askPassword()
     {
         $this->ask('Inform your password...', function (Answer $answer) {
@@ -55,6 +71,10 @@ class RegisterConversation extends Conversation
         });
     }
 
+    /**
+     * Apply the the action to get the password_confirm
+     *
+     */
     public function askPasswordConfirm()
     {
         $this->ask('Confirm your password', function (Answer $answer) {
@@ -88,7 +108,10 @@ class RegisterConversation extends Conversation
         });
     }
 
-
+    /**
+     * Main method to run this Conversation
+     *
+     */
     public function run()
     {
         // This will be called immediately

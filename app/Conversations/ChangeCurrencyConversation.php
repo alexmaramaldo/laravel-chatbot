@@ -16,15 +16,27 @@ class ChangeCurrencyConversation extends Conversation
     protected $currency;
 
     protected $currencyAPIService;
-
     protected $accountService;
 
+    /**
+     * Create a new ChangeCurrencyConversation instance
+     *
+     * @param CurrencyAPIService $currencyAPIService Dependency injection from repository layer
+     * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
+     */
     public function __construct(CurrencyAPIService $currencyAPIService, AccountService $accountService)
     {
         $this->currencyAPIService = $currencyAPIService;
         $this->accountService = $accountService;
     }
 
+
+    /**
+     * Apply the the action to get the value
+     *
+     */
     public function askCurrency()
     {
         $message = "<b>Currency List:</b><br />";
@@ -59,8 +71,10 @@ class ChangeCurrencyConversation extends Conversation
         });
     }
 
-
-
+    /**
+     * Main method to run this Conversation
+     *
+     */
     public function run()
     {
         // This will be called immediately

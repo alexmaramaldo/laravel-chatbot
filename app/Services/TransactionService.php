@@ -8,16 +8,35 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * TransactionService Class with the main logic to transactions
+ */
 class TransactionService
 {
     private $transactionRepository;
 
+    /**
+     * Create a new TransactionService instance
+     *
+     * @param TransactionRepository $transactionRepo Dependency injection
+     *
+     * @return void
+     */
     public function __construct(TransactionRepository $transactionRepo)
     {
         $this->transactionRepository = $transactionRepo;
     }
 
-    public function deposit(array $parameters)
+    /**
+     * Deposit a value on logged User
+     *
+     * @param array $parameters Params with value
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    public function deposit(array $parameters): bool
     {
         try {
 
@@ -30,10 +49,20 @@ class TransactionService
 
             return true;
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw $e;
         }
     }
 
+
+    /**
+     * Withdraw a value on logged User
+     *
+     * @param array $parameters Params with value
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
     public function withdraw(array $parameters)
     {
         try {
@@ -47,7 +76,6 @@ class TransactionService
                 'type' => 'withdraw'
             ];
             $user->transactions()->create($data);
-
 
             return true;
         } catch (Exception $e) {

@@ -15,11 +15,22 @@ class DepositConversation extends Conversation
 
     protected $transactionService;
 
+    /**
+     * Create a new DepositConversation instance
+     *
+     * @param TransactionService $transactionService Dependency injection from repository layer
+     *
+     * @return void
+     */
     public function __construct(TransactionService $transactionService)
     {
         $this->transactionService = $transactionService;
     }
 
+    /**
+     * Apply the the action to get the value
+     *
+     */
     public function askValue()
     {
         $this->ask('What amount you want to deposit?', function (Answer $answer) {
@@ -36,8 +47,10 @@ class DepositConversation extends Conversation
         });
     }
 
-
-
+    /**
+     * Main method to run this Conversation
+     *
+     */
     public function run()
     {
         // This will be called immediately

@@ -8,10 +8,13 @@ use Exception;
 class UserRepository extends BaseRepository
 {
     public $model;
+
     /**
      * Create a new UserRepository instance
      *
      * @param User $user Dependency injection from model layer
+     *
+     * @return void
      */
     public function __construct(User $user)
     {
@@ -19,10 +22,17 @@ class UserRepository extends BaseRepository
         $this->model = $this->obj;
     }
 
-    public function findByEmail(string $email)
+
+    /**
+     * Search user by email
+     *
+     * @param string $user
+     *
+     * @return object
+     */
+    public function findByEmail(string $email): object
     {
         $user = $this->obj->where("email", $email)->first();
-
         return $user;
     }
 }

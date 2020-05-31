@@ -11,16 +11,26 @@ use Illuminate\Support\Facades\Auth;
 class LoginConversation extends Conversation
 {
     protected $email;
-
     protected $password;
 
     protected $accountService;
 
+    /**
+     * Create a new LoginConversation instance
+     *
+     * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
+     */
     public function __construct(AccountService $accountService)
     {
         $this->accountService = $accountService;
     }
 
+    /**
+     * Apply the the action to get the email
+     *
+     */
     public function askLogin()
     {
         $this->ask('Hey, send me your email', function (Answer $answer) {
@@ -31,6 +41,10 @@ class LoginConversation extends Conversation
         });
     }
 
+    /**
+     * Apply the the action to get the password
+     *
+     */
     public function askPassword()
     {
         $this->ask('Now, I need your password,be careful, don\'t let anyone see', function (Answer $answer) {
@@ -45,18 +59,10 @@ class LoginConversation extends Conversation
         });
     }
 
-
-    public function askCode()
-    {
-        $this->ask('What is the security CODE? You have 30 seconds to inform it!', function (Answer $answer) {
-            // Save result
-            $this->code = $answer->getText();
-
-            $this->say('You\'re logged successfully.');
-        });
-    }
-
-
+    /**
+     * Main method to run this Conversation
+     *
+     */
     public function run()
     {
         // This will be called immediately
