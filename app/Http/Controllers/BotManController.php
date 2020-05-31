@@ -10,7 +10,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 class BotManController extends Controller
 {
     /**
-     * Place your BotMan logic here.
+     * Creating the Listern to the BotMan
      */
     public function handle()
     {

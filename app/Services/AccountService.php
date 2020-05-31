@@ -11,11 +11,25 @@ class AccountService
 {
     private $userRepository;
 
+    /**
+     * Create a new AccountService instance
+     *
+     * @param UserRepository $userRepo Dependency injection from model layer
+     *
+     * @return void
+     */
     public function __construct(UserRepository $userRepo)
     {
         $this->userRepository = $userRepo;
     }
 
+    /**
+     * register - Method to save the user on database
+     *
+     * @param array $parameters Array with ParamUsers
+     *
+     * @return mixed
+     */
     public function register(array $parameters)
     {
         $decrypted_password = $parameters['password'];
@@ -42,6 +56,14 @@ class AccountService
         return $data_return;
     }
 
+    /**
+     * login - Method to realize the Login
+     *
+     * @param string $email Email from the user
+     * @param string $password Password from the user
+     *
+     * @return mixed
+     */
     public function login(string $email, string $password)
     {
         $credentials = ["email" => $email, "password" => $password];
@@ -119,7 +141,17 @@ class AccountService
         ];
     }
 
-    public function updateCurrency($user_id, $currency)
+    /**
+     * updateCurrency - change the currency by User Id.
+     *
+     * @param  string $token
+     * @param  string $token
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    public function updateCurrency(int $user_id, string $currency): bool
     {
 
         $user = $this->userRepository->find($user_id);

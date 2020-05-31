@@ -13,6 +13,9 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * BotCommandService is the main class with a routes to distributed the mains actions on the chat
+ */
 class BotCommandService
 {
     private $registerConversation;
@@ -22,6 +25,18 @@ class BotCommandService
     private $withdrawConversation;
     private $changeCurrencyConversation;
 
+    /**
+     * Create a new BotCommandService instance
+     *
+     * @param RegisterConversation $registerConversation Dependency injection from model layer
+     * @param LoginConversation $loginConversation Dependency injection from model layer
+     * @param LogoutConversation $logoutConversation Dependency injection from model layer
+     * @param DepositConversation $depositConversation Dependency injection from model layer
+     * @param WithdrawConversation $withdrawConversation Dependency injection from model layer
+     * @param ChangeCurrencyConversation $changeCurrencyConversation Dependency injection from model layer
+     *
+     * @return void
+     */
     public function __construct(
         RegisterConversation $registerConversation,
         LoginConversation $loginConversation,
@@ -38,6 +53,14 @@ class BotCommandService
         $this->changeCurrencyConversation = $changeCurrencyConversation;
     }
 
+    /**
+     * listenCommand - Method to save the user on database
+     *
+     * @param BotMan $botman Instance with botman methods
+     * @param string $message Informed by User
+     *
+     * @return mixed
+     */
     public function listenCommand($botman, $message)
     {
         switch (strtolower(trim($message))) {
@@ -80,6 +103,13 @@ class BotCommandService
         }
     }
 
+    /**
+     * helpCommand - Show all commands allowed on chat
+     *
+     * @param BotMan $botman BotMan instance
+     *
+     * @return mixed
+     */
     public function helpCommand($botman)
     {
         $message = "
@@ -98,16 +128,37 @@ class BotCommandService
         $botman->reply($message);
     }
 
+    /**
+     * myBalanceCommand - Show the current Balance from the user
+     *
+     * @param BotMan $botman BotMan instance
+     *
+     * @return mixed
+     */
     public function myBalanceCommand($botman)
     {
         $botman->reply('Your balance is ' . Auth::user()->currency . ' ' . number_format(Auth::user()->myBalance(), 2));
     }
 
+    /**
+     * myCurrency - Show the currency from the user
+     *
+     * @param BotMan $botman BotMan instance
+     *
+     * @return mixed
+     */
     public function myCurrency($botman)
     {
         $botman->reply('Your currency is ' . Auth::user()->currency);
     }
 
+    /**
+     * listCurrencies - List all currencies allowed
+     *
+     * @param BotMan $botman BotMan instance
+     *
+     * @return mixed
+     */
     public function listCurrencies($botman)
     {
         try {
@@ -130,7 +181,14 @@ class BotCommandService
         }
     }
 
-    public function isLogged($botman)
+    /**
+     * isLogged - Method to check if user is logged and send a message
+     *
+     * @param BotMan $botman BotMan instance
+     *
+     * @return bool
+     */
+    public function isLogged($botman): bool
     {
         if (!Auth::check()) {
             $botman->reply("Hey, I can't to do it, you need are logged on ChatBank to execute this command! Type <b>login</b> or <b>help</b> to see all commands!!!!");

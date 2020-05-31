@@ -23,6 +23,8 @@ class ChangeCurrencyConversation extends Conversation
      *
      * @param CurrencyAPIService $currencyAPIService Dependency injection from repository layer
      * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
      */
     public function __construct(CurrencyAPIService $currencyAPIService, AccountService $accountService)
     {

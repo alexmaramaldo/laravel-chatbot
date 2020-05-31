@@ -21,6 +21,8 @@ class RegisterConversation extends Conversation
      * Create a new RegisterConversation instance
      *
      * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
      */
     public function __construct(AccountService $accountService)
     {

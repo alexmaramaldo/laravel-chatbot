@@ -20,6 +20,8 @@ class WithdrawConversation extends Conversation
      * Create a new DepositConversation instance
      *
      * @param WithdrawConversation $transactionService Dependency injection from repository layer
+     *
+     * @return void
      */
     public function __construct(TransactionService $transactionService)
     {

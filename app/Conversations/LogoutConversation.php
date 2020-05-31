@@ -17,6 +17,8 @@ class LogoutConversation extends Conversation
      * Create a new LoginConversation instance
      *
      * @param AccountService $accountService Dependency injection from repository layer
+     *
+     * @return void
      */
     public function __construct(AccountService $accountService)
     {
