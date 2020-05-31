@@ -106,7 +106,7 @@ AMDOREN_API_SECRET=
 AMDOREN_API_URL=
 ```
 
-##### Plus: Command to run using docker with sqlite(without MySQL)
+# Plus: Command to run using docker with sqlite(without MySQL)
 
 -   Download and run the image, don't need change the value, only the PORT if you need.
 
