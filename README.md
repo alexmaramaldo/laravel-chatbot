@@ -6,7 +6,7 @@ AlexMaramaldo ChatBank is a friendly chat to execute basic operations in your ac
 
 # Introduction
 
-The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache 2.4, has an integration with AMDOREN(https://www.amdoren.com/api), my token to be work fine, I got the payment license, and I have 10K requestsper month, but, if you have an account, you can use your `API KEY`, this project has main parts beside default from the Laravel, like:
+The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache 2.4 and Artisan Serve(custom server native from laravel), has an integration with AMDOREN(https://www.amdoren.com/api), my token to be work fine, I got the payment license, and I have 10K requestsper month, but, if you have an account, you can use your `API KEY`, this project has main parts beside default from the Laravel, like:
 
 -   App\Services
 
@@ -67,10 +67,9 @@ The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache
 
 # How to install on Linux Server
 
--   Clone the project on your web folder `git clone https://asdasdasads`;
--   After you instaled all requirements, you need change the ROOT Folder from Apache to WORKDIR_TO_PROJECT/public, this is because Laravel work with a subfolder to allow the access on the project;
--   Create the database on MySQL;
+-   Clone the project on your web folder `https://github.com/alexmaramaldo/laravel-chatbot`;
 -   On project, you need copy the `.env.example` to `.env`;
+-   Install the composer packages `$ composer install`
 -   Change the values on `.env`, mainly on `database connections`;
 
 ```
@@ -82,9 +81,10 @@ DB_USERNAME=default
 DB_PASSWORD=secret
 ```
 
--   Install the composer packages `$ composer install`
+-   Create the database on MySQL;
 -   You can import the `database/backup.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
--   Open your browser `http://yourhost`
+-   After you instaled all requirements, case you will use the Apache, you need change the ROOT Folder from Apache to WORKDIR_TO_PROJECT/public, this is because Laravel work with a subfolder to allow the access on the project, If you will use the Artisan Serve, is just run: `php artisan serve`;
+-   Open your browser `http://yourhost` or `http://yourhost:8000` for artisan serve
 -   Extra environments vars that you can set, but, not mandatory:
 
 ```
@@ -106,7 +106,7 @@ $ docker run -d -t -i -e DB_CONNECTION="mysql" \
     -e DB_USERNAME="root" \
     -e DB_PASSWORD="secret" \
     -p 8000:80 \
---name alexmaramaldo-chatbot alexmaramaldo/chatbot
+--name alexmaramaldo-chatbot alexmaramaldo/chatbot:latest
 ```
 
 -   You can import the `database/backup.sql` on your database or run the migrate command from the Laravel Docker `$ docker exec -it alexmaramaldo-chatbot php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
@@ -126,7 +126,7 @@ AMDOREN_API_URL=
 $ docker run -d -t -i -e DB_HOST='host.docker.internal' \
     -e DB_CONNECTION="sqlite" \
     -p 8000:80 \
-    --name alexmaramaldo-chatbot alexmaramaldo/chatbot
+    --name alexmaramaldo-chatbot alexmaramaldo/chatbot:latest
 ```
 
 -   Open your browser `http://yourhost:8000`
@@ -145,5 +145,3 @@ AMDOREN_API_URL=
     ![alt Use Case](http://osbox.com.br/alexmaramaldo-chatbot/UseCaseV1.png)
 -   Activity Diagram
     ![alt Activity Diagram](http://osbox.com.br/alexmaramaldo-chatbot/ChatBotDiagram.png)
-
-# Videos tutorials

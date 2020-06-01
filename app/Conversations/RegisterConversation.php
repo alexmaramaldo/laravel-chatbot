@@ -54,7 +54,12 @@ class RegisterConversation extends Conversation
             // Save result
             $this->email = $answer->getText();
 
-            $this->askPassword();
+            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                $this->say("Email address '" . $this->email . "' is invalid, try again....\n");
+                return $this->askEmail();
+            }
+
+            return $this->askPassword();
         });
     }
 
