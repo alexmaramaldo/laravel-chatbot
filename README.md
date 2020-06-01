@@ -82,7 +82,7 @@ DB_PASSWORD=secret
 ```
 
 -   Create the database on MySQL;
--   You can import the `database/backup.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
+-   You can import the `database/chatbot_2020-05-31.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
 -   After you instaled all requirements, case you will use the Apache, you need change the ROOT Folder from Apache to WORKDIR_TO_PROJECT/public, this is because Laravel work with a subfolder to allow the access on the project, If you will use the Artisan Serve, is just run: `php artisan serve`;
 -   Open your browser `http://yourhost` or `http://yourhost:8000` for artisan serve
 -   Extra environments vars that you can set, but, not mandatory:
@@ -109,7 +109,7 @@ $ docker run -d -t -i -e DB_CONNECTION="mysql" \
 --name alexmaramaldo-chatbot alexmaramaldo/chatbot:latest
 ```
 
--   You can import the `database/backup.sql` on your database or run the migrate command from the Laravel Docker `$ docker exec -it alexmaramaldo-chatbot php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
+-   You can import the `database/chatbot_2020-05-31.sql` on your database or run the migrate command from the Laravel Docker `$ docker exec -it alexmaramaldo-chatbot php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
 -   Open your browser `http://yourhost:8000`
 -   Extra environments vars that you can set, but, not mandatory:
 
@@ -123,8 +123,7 @@ AMDOREN_API_URL=
 -   Download and run the image, don't need change the value, only the PORT if you need.
 
 ```sh
-$ docker run -d -t -i -e DB_HOST='host.docker.internal' \
-    -e DB_CONNECTION="sqlite" \
+$ docker run -d -t -i -e DB_CONNECTION="sqlite" \
     -p 8000:80 \
     --name alexmaramaldo-chatbot alexmaramaldo/chatbot:latest
 ```
