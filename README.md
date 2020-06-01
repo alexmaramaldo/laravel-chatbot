@@ -65,33 +65,6 @@ The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache
 -   Apache 2.4
 -   MySQL 5.7
 
-# How to install on Linux Server
-
--   Clone the project on your web folder `https://github.com/alexmaramaldo/laravel-chatbot`;
--   On project, you need copy the `.env.example` to `.env`;
--   Install the composer packages `$ composer install`
--   Change the values on `.env`, mainly on `database connections`;
-
-```
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=default
-DB_USERNAME=default
-DB_PASSWORD=secret
-```
-
--   Create the database on MySQL;
--   You can import the `database/chatbot_2020-05-31.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
--   After you instaled all requirements, case you will use the Apache, you need change the ROOT Folder from Apache to WORKDIR_TO_PROJECT/public, this is because Laravel work with a subfolder to allow the access on the project, If you will use the Artisan Serve, is just run: `php artisan serve`;
--   Open your browser `http://yourhost` or `http://yourhost:8000` for artisan serve
--   Extra environments vars that you can set, but, not mandatory:
-
-```
-AMDOREN_API_SECRET=
-AMDOREN_API_URL=
-```
-
 # How to run using docker
 
 You can run the app using docker, for it, you need have a Docker previous installed in your server/computer
@@ -118,7 +91,34 @@ AMDOREN_API_SECRET=
 AMDOREN_API_URL=
 ```
 
-# Plus: Command to run using docker with sqlite(without MySQL)
+# How to install from scratch
+
+-   Clone the project on your web folder `https://github.com/alexmaramaldo/laravel-chatbot`;
+-   On project, you need copy the `.env.example` to `.env`;
+-   Install the composer packages `$ composer install`
+-   Change the values on `.env`, mainly on `database connections`;
+
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=default
+DB_USERNAME=default
+DB_PASSWORD=secret
+```
+
+-   Create the database on MySQL;
+-   You can import the `database/chatbot_2020-05-31.sql` on your database or run the migrate command from the Laravel `$ php artisan migrate`, you will receive a question if you have shure to run on Production Enviroment, type `yes`;
+-   After you instaled all requirements, case you will use the Apache, you need change the ROOT Folder from Apache to WORKDIR_TO_PROJECT/public, this is because Laravel work with a subfolder to allow the access on the project, If you will use the Artisan Serve, is just run: `php artisan serve`;
+-   Open your browser `http://yourhost` or `http://yourhost:8000` for artisan serve
+-   Extra environments vars that you can set, but, not mandatory:
+
+```
+AMDOREN_API_SECRET=
+AMDOREN_API_URL=
+```
+
+# PLUS with SQLite: Command to run using docker with sqlite(without MySQL)
 
 -   Download and run the image, don't need change the value, only the PORT if you need.
 
