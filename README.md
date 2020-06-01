@@ -28,7 +28,6 @@ The project was created on Laravel 7.4, using Mysql 5.7, and tested using Apache
 -   App\Conversations
 
 ```
-- ChangeCurrencyConversation.php
 - DepositConversation.php
 - LoginConversation.php
 - LogoutConversation.php
